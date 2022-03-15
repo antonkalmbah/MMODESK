@@ -1,0 +1,39 @@
+{% extends 'default.html' %}
+{% load bootstrap %}
+{% block content %}
+{% load static %}
+  <!-- Page Content -->
+<div class="col-lg-12 portfolio-item">
+    <div class="card h-100">
+        <img class="card-img-top" src="{{ ad_details.image.url }}" alt="">
+        <div class="card-body">
+            <h4 class="card-title">{{ ad_details.name }}</h4>
+            <p class="card-text">{{ ad_details.description }}</p>
+            <p class="card-text">{{ ad_details.content }}</p>
+            <a href="{{ ad_details.url }}" class="card-link">доп. ссылка</a>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12 portfolio-item">
+    {% for comment in ad_details.comments.all %}
+    {% if comment.active %}
+    <div class="card-body">
+        <p class="badge bg-light text-dark">
+            Комментарии: {{ forloop.counter }} от {{ comment.name }} {{ comment.created }}
+        </p>
+        <p class="badge bg-light text-dark">{{ comment.body|linebreaks }}</p>
+    {% else %}
+    </div>
+    {% endif %}
+    {% endfor %}
+    <div class="col-lg-12 portfolio-item">
+        <h4 class="col-lg-4">Добавить комментарий</h4>
+        <form class="form-group col-lg-4" action="." method="POST">
+            {{ form | bootstrap}}
+            {% csrf_token %}
+            <br class="col-sm-10">
+            <input class="btn btn-outline-dark" type="submit" value="Добавить">
+        </form>
+    </div>
+</div>
+{% endblock %}

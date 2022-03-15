@@ -1,0 +1,38 @@
+{% extends 'default.html' %}
+{% block content %}
+{% load static %}
+  <!-- Page Content -->
+<div class="col-lg-12 portfolio-item">
+    <div class="card h-100">
+        <img class="card-img-top" src="{{ post.image.url }}" alt="">
+        <div class="card-body">
+            <h4 class="card-title">{{ post.name }}</h4>
+            <p class="card-text">{{ post.description }}</p>
+            <p class="card-text">{{ post.content }}</p>
+            <a href="{{ ad_details.url }}" class="card-link">доп. ссылка</a>
+        </div>
+    </div>
+</div>
+<div class="col-lg-12 portfolio-item">
+  {% for comment in post.comments.all %}
+    {% if comment.active %}
+  <div class="card-body">
+    <input class="form-check-input" type="checkbox" checked>
+      <p class="card-text">Новый отклик: от {{ comment.name }} | {{ comment.created }} -
+          <em class="card-text"><ins>{{ comment.body }}</ins></em>
+          <a class="remove" href="{% url 'comment_delete' comment.pk %}">X</a>
+      </p>
+  </div>
+    {% else %}
+  <div class="card-body">
+    <input class="form-check-input" type="checkbox" disabled>
+    <p><del>Новый отклик: от {{ comment.name }} | {{ comment.created }} -</del>
+        <em class="card-text"><del>{{ comment.body }}</del></em>
+        <a class="remove" href="{% url 'comment_delete' comment.pk %}">X</a>
+        <a class="remove" href="{% url 'comment_update' comment.pk %}">V</a>
+      </p>
+  </div>
+</div>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
